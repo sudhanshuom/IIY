@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/quantum_cyan"
+    tools:context=".ForgotPassActivity">
+
+    <RelativeLayout
+        android:visibility="visible"
+        android:id="@+id/otpverifylayoutFP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/headingFP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Verify Phone"
+                android:textColor="#EEEEEE"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/otpFP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:background="@android:color/transparent"
+                android:drawableStart="@drawable/phone"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:hint="OTP"
+                android:inputType="number"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="1.5px"
+                android:background="#EEEEEE" />
+
+            <Button
+                android:id="@+id/verifybtnFP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/otp"
+                android:layout_marginTop="25dp"
+                android:layout_gravity="center_horizontal"
+                android:background="#FFFFFF"
+                android:ems="17"
+                android:text="VERIFY" />
+
+            <TextView
+                android:id="@+id/backFP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="5dp"
+                android:padding="5dp"
+                android:gravity="center"
+                android:text="back"
+                android:linksClickable="true"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#FFFFFF" />
+
+            <View
+                android:layout_marginTop="25dp"
+                android:layout_width="match_parent"
+                android:layout_height="1.5px"
+                android:background="#EEEEEE" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/forgPassLYFP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_centerInParent="true" >
+
+        <TextView
+            android:id="@+id/rpfp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RESET PASSWORD"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:textColor="#EEEEEE"
+            android:textSize="25sp"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/passFP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rpfp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:background="@android:color/transparent"
+            android:drawableStart="@drawable/password"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="1.5px"
+            android:layout_below="@+id/passFP"
+            android:background="#EEEEEE" />
+
+
+        <EditText
+            android:id="@+id/cnfpassFP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/passFP"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/transparent"
+            android:drawableStart="@drawable/cnfpass"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="1.5px"
+            android:layout_below="@+id/cnfpassFP"
+            android:background="#EEEEEE" />
+
+        <Button
+            android:id="@+id/resetButtonFP"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="20dp"
+            android:background="#EEEEEE"
+            android:padding="3dp"
+            android:text="RESET PASSWORD"
+            android:layout_below="@+id/cnfpassFP"
+            android:textColor="@color/quantum_cyan"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
