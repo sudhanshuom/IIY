@@ -66,6 +66,7 @@ public class Tracking extends AppCompatActivity implements OnMapReadyCallback {
                 // whenever data at this location is updated.
                 mMap.clear();
                 Location value = dataSnapshot.getValue(Location.class);
+                assert value != null;
                 LatLng currentLocation = new LatLng(Double.parseDouble(value.getLattitude()),
                                 Double.parseDouble(value.getLongitude()));
 
