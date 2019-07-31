@@ -1,6 +1,7 @@
 package com.app.trackschool;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -50,6 +51,7 @@ public class UserLogin extends AppCompatActivity {
     private Animation shakeAnimation;
     Button loginButton;
     FirebaseAuth mAuth;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +132,10 @@ public class UserLogin extends AppCompatActivity {
     private void StartLogin(){
         String email = admission.getText().toString().trim();
         String passwordd = password.getText().toString().trim();
+        progressDialog = ProgressDialog.show(UserLogin.this, "",
+                "Signing in Please wait...", false);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
         mAuth.signInWithEmailAndPassword(email, passwordd)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -139,25 +145,19 @@ public class UserLogin extends AppCompatActivity {
                             Log.e("login", "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             startActivity(new Intent(UserLogin.this, MainActivity.class));
+                            progressDialog.cancel();
                             finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.e("errorlogin", "signInWithEmail:failure", task.getException());
                             Toast.makeText(UserLogin.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+                            progressDialog.cancel();
                         }
 
                         // ...
                     }
                 });
-    }
-
-    protected void gotoDashboard() {
-        /**
-         * Opens the user dashboard
-         * * */
-        Intent dashboard = new Intent(this,MainActivity.class);
-        startActivity(dashboard);
     }
 
     public void StartForgotPassword(View v) {

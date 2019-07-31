@@ -2,21 +2,30 @@ package com.app.trackschool;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.app.trackschool.Model.Profile_model;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableResult;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Profile extends AppCompatActivity {
 
@@ -42,6 +51,8 @@ public class Profile extends AppCompatActivity {
             finish();
         }
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         backimg = findViewById(R.id.back);
         name = findViewById(R.id.name);
         class_sec = findViewById(R.id.class_sec);
@@ -66,35 +77,65 @@ public class Profile extends AppCompatActivity {
 //                "Ez stays, Einstein house", "Noida", "U.P.", "Male",
 //                "19/02/2000","8874563211");
 //
-//        myRef.setValue(model);
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                Profile_model value = dataSnapshot.getValue(Profile_model.class);
-                name.setText(value.getName());
-                class_sec.setText(value.getClass_sec());
-                admission_no.setText(value.getAdmission_no());
-                contact.setText(value.getContact());
-                gender.setText(value.getGender());
-                dob.setText(value.getDob());
-                father.setText(value.getFather());
-                mother.setText(value.getMother());
-                father_occupation.setText(value.getFather_occupation());
-                mother_occupation.setText(value.getMother_occupation());
-                address.setText(value.getAddress());
-                city.setText(value.getCity());
-                state.setText(value.getState());
-                Log.d("successDB", "Value is: " + value.getName());
-            }
+//        db.collection("Parent").document("user/"+uid+"/details").set(model);
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w("failReadingDB", "Failed to read value.", error.toException());
-            }
-        });
+        db.collection("Parent").document("user/"+uid+"/details")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            Profile_model value = document.toObject(Profile_model.class);
+                            name.setText(value.getName());
+                            class_sec.setText(value.getClass_sec());
+                            admission_no.setText(value.getAdmission_no());
+                            contact.setText(value.getContact());
+                            gender.setText(value.getGender());
+                            dob.setText(value.getDob());
+                            father.setText(value.getFather());
+                            mother.setText(value.getMother());
+                            father_occupation.setText(value.getFather_occupation());
+                            mother_occupation.setText(value.getMother_occupation());
+                            address.setText(value.getAddress());
+                            city.setText(value.getCity());
+                            state.setText(value.getState());
+                            Log.e("success", document.getId() + " => " + document.getData());
+
+                        } else {
+                            Log.e("error", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+
+//        myRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                // This method is called once with the initial value and again
+//                // whenever data at this location is updated.
+//                Profile_model value = dataSnapshot.getValue(Profile_model.class);
+//                name.setText(value.getName());
+//                class_sec.setText(value.getClass_sec());
+//                admission_no.setText(value.getAdmission_no());
+//                contact.setText(value.getContact());
+//                gender.setText(value.getGender());
+//                dob.setText(value.getDob());
+//                father.setText(value.getFather());
+//                mother.setText(value.getMother());
+//                father_occupation.setText(value.getFather_occupation());
+//                mother_occupation.setText(value.getMother_occupation());
+//                address.setText(value.getAddress());
+//                city.setText(value.getCity());
+//                state.setText(value.getState());
+//                Log.d("successDB", "Value is: " + value.getName());
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error) {
+//                // Failed to read value
+//                Log.w("failReadingDB", "Failed to read value.", error.toException());
+//            }
+//        });
 
         backimg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +143,11 @@ public class Profile extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+
+
+
+
 
     }
 

@@ -2,9 +2,18 @@ package com.app.trackschool;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+
+import android.util.Log;
 import android.view.View;
+
+import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
@@ -14,21 +23,66 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableResult;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    FirebaseFunctions mFunctions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         if(FirebaseAuth.getInstance().getCurrentUser() == null){
             startActivity(new Intent(MainActivity.this, UserLogin.class));
             finish();
+            return;
         }
+
+        mFunctions = FirebaseFunctions.getInstance();
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.e("instanceFail", "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        // Log and toast
+                        Log.e("token", token);
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                        addMessage(token).addOnSuccessListener(new OnSuccessListener<String>() {
+                            @Override
+                            public void onSuccess(String s) {
+                                Log.e("return", s);
+                            }
+                        });
+                        db.collection("Parent").document("user/"+FirebaseAuth.getInstance().getCurrentUser().getUid()
+                        +"/details").update("token",token);
+                        //Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -107,5 +161,26 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private Task<String> addMessage(String text) {
+        // Create the arguments to the callable function.
+        Map<String, Object> data = new HashMap<>();
+        data.put("text", text);
+        data.put("push", true);
+
+        return mFunctions
+                .getHttpsCallable("addMessage")
+                .call(data)
+                .continueWith(new Continuation<HttpsCallableResult, String>() {
+                    @Override
+                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        // This continuation runs on either success or failure, but if the task
+                        // has failed then getResult() will throw an Exception which will be
+                        // propagated down.
+                        String result = (String) task.getResult().getData();
+                        return result;
+                    }
+                });
     }
 }

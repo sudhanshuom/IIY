@@ -7,7 +7,6 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -16,9 +15,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.Random;
+
 
 public class ForgotPassActivity extends AppCompatActivity {
 
@@ -30,8 +27,6 @@ public class ForgotPassActivity extends AppCompatActivity {
     private RelativeLayout forgPass, otply;
     private ProgressDialog progressDialog;
     private String phoneNumber;
-    String server_url_resetpass = "https://limitless-beach-58047.herokuapp.com/reset";
-    private final String authKey = "268889AKi2yko1Jwv35c95dd9b";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,88 +102,6 @@ public class ForgotPassActivity extends AppCompatActivity {
     }
 
 
-    private void sendOTP(){
-        phoneNumber = phoneAndOtp.getText().toString().trim().trim();
-        startPhoneNumberVerification(phoneNumber);
-    }
-
-    private void startPhoneNumberVerification(String phoneNumber) {
-
-        if(phoneNumber.length() !=10){
-            return;
-        }
-        mVerificationInProgress = true;
-        String url = createURL(phoneNumber);
-        Log.e("otpurl",url);
-
-    }
-
-    private String createURL(String ph){
-        String sender = "IIYDRS";
-        String timeout = "5";//In minutes
-        String otp = generateOTP();
-        String msg = "is your verification code";
-
-        String mainUrl="http://api.msg91.com/api/sendotp.php?";
-        StringBuilder sbPostData= new StringBuilder(mainUrl);
-
-        String encoded_message= null;
-        try {
-            encoded_message = URLEncoder.encode(msg,java.nio.charset.StandardCharsets.UTF_8.toString());
-            sbPostData.append("otp_length="+6);
-            sbPostData.append("&authkey="+authKey);
-            sbPostData.append("&message="+otp+"+"+encoded_message);
-            sbPostData.append("&sender="+sender);
-            sbPostData.append("&mobiles="+ph);
-            sbPostData.append("&otp="+otp);
-            sbPostData.append("&otp_expiry="+timeout);
-
-            mainUrl = sbPostData.toString().trim();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        return mainUrl;
-
-    }
-    private String generateOTP(){
-        Random rn = new Random();
-        String otp = ""+rn.nextInt(10);
-        otp += rn.nextInt(10);
-        otp += rn.nextInt(10);
-        otp += rn.nextInt(10);
-        otp += rn.nextInt(10);
-        otp += rn.nextInt(10);
-
-        return otp;
-    }
-
-    public void verifyotp(){
-        String otp = phoneAndOtp.getText().toString().trim();
-        if(otp.length() != 6){
-            new CustomToast().Show_Toast(ForgotPassActivity.this,getCurrentFocus(),"Invalid OTP");
-            return;
-        }
-        progressDialog = ProgressDialog.show(this, "",
-                "Verifying OTP Please wait...", true);
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-        verifyPhoneNumberWithCode(phoneNumber , phoneAndOtp.getText().toString().trim());
-    }
-
-    private void verifyPhoneNumberWithCode(String phoneNumber, String code) {
-        //"https://control.msg91.com/api/verifyRequestOTP.php?authkey=&mobile=&otp=")
-        Log.e("vrfyOTP", "https://control.msg91.com/api/verifyRequestOTP.php?"+
-                "authkey="+authKey+
-                "&mobile="+phoneNumber+
-                "&otp="+code);
-
-        if(code.equals("") || code == null){
-            phoneAndOtp.setAnimation(shakeAnimation);
-            return;
-        }
-
-    }
 
     @Override
     public void onBackPressed() {

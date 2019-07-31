@@ -2,14 +2,14 @@ package com.app.trackschool.Model;
 
 public class Location {
 
-    String longitude, lattitude;
+    String longitude, latittude;
 
     public Location() {
     }
 
-    public Location(String longitude, String lattitude) {
+    public Location(String longitude, String latittude) {
         this.longitude = longitude;
-        this.lattitude = lattitude;
+        this.latittude = latittude;
     }
 
     public String getLongitude() {
@@ -20,11 +20,11 @@ public class Location {
         this.longitude = longitude;
     }
 
-    public String getLattitude() {
-        return lattitude;
+    public String getLatittude() {
+        return latittude;
     }
 
-    public void setLattitude(String lattitude) {
-        this.lattitude = lattitude;
+    public void setLatittude(String latittude) {
+        this.latittude = latittude;
     }
 }

@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CalendarView;
+import android.widget.ImageView;
 
 import com.imanoweb.calendarview.CalendarListener;
 import com.imanoweb.calendarview.CustomCalendarView;
@@ -22,11 +24,13 @@ public class HolidayCalendar extends AppCompatActivity {
 
     CustomCalendarView calendarView;
     Calendar currentCalendar;
+    ImageView bcimg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_holiday_calendar);
 
+        bcimg = findViewById(R.id.back);
         calendarView = findViewById(R.id.calendar);
         currentCalendar = Calendar.getInstance(Locale.getDefault());
         calendarView.setFirstDayOfWeek(Calendar.MONDAY);
@@ -45,6 +49,12 @@ public class HolidayCalendar extends AppCompatActivity {
             @Override
             public void onMonthChanged(Date date) {
                 return;
+            }
+        });
+        bcimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
 
@@ -76,5 +86,11 @@ public class HolidayCalendar extends AppCompatActivity {
         al.add("12/07/2019"+"/0");
         al.add("19/08/2019"+"/0");
         return al;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }
