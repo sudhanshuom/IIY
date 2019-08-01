@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity
                         Log.e("token", token);
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                        addMessage(token).addOnSuccessListener(new OnSuccessListener<String>() {
+                        sendNotification(token).addOnSuccessListener(new OnSuccessListener<String>() {
                             @Override
                             public void onSuccess(String s) {
                                 Log.e("return", s);
@@ -163,14 +163,16 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private Task<String> addMessage(String text) {
+    private Task<String> sendNotification(String text) {
         // Create the arguments to the callable function.
         Map<String, Object> data = new HashMap<>();
         data.put("text", text);
+        data.put("message", "Hello one, your bus will arrive shortly, Don't be late");
+        data.put("title", "Bus");
         data.put("push", true);
 
         return mFunctions
-                .getHttpsCallable("addMessage")
+                .getHttpsCallable("sendNotification")
                 .call(data)
                 .continueWith(new Continuation<HttpsCallableResult, String>() {
                     @Override
