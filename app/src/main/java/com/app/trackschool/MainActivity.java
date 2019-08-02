@@ -163,10 +163,10 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private Task<String> sendNotification(String text) {
+    private Task<String> sendNotification(String token) {
         // Create the arguments to the callable function.
         Map<String, Object> data = new HashMap<>();
-        data.put("text", text);
+        data.put("token", token);
         data.put("message", "Hello one, your bus will arrive shortly, Don't be late");
         data.put("title", "Bus");
         data.put("push", true);
