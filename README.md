@@ -2,12 +2,13 @@
 
 To send notification
 
-1) Add firebase function dependecies
-2) FirebaseFunction mFunctions;
+Add firebase function dependecies
 
 -Call function as
 ```
 {
+FirebaseFunction mFunctions;
+
 mFunctions
   .getHttpsCallable("sendNotification")
   .call(data)
