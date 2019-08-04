@@ -10,8 +10,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.NoActionBar">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -20,7 +19,7 @@
             <ImageView
                 android:id="@+id/back"
                 android:layout_width="50dp"
-                android:layout_height="45dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="7dp"
                 android:layout_marginLeft="@dimen/appbar_padding"
                 app:srcCompat="@drawable/ic_arrow_back"/>
@@ -31,6 +30,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/appbar_padding"
                 android:text="Student Profile"
+                android:textColor="#FFFFFF"
                 android:layout_toEndOf="@+id/back"
                 android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
 

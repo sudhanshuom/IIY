@@ -159,9 +159,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            // Handle the camera action
-        } else if (id == R.id.profile) {
+        if (id == R.id.profile) {
             startActivity(new Intent(MainActivity.this, Profile.class));
         } else if (id == R.id.track_location) {
             startActivity(new Intent(MainActivity.this, Tracking.class));

@@ -2,17 +2,11 @@ package com.app.trackschool;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CalendarView;
 import android.widget.ImageView;
-
 import com.imanoweb.calendarview.CalendarListener;
 import com.imanoweb.calendarview.CustomCalendarView;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,12 +37,11 @@ public class HolidayCalendar extends AppCompatActivity {
             @Override
             public void onDateSelected(Date date) {
                 calendarView.refreshCalendar(currentCalendar);
-                return;
             }
 
             @Override
             public void onMonthChanged(Date date) {
-                return;
+
             }
         });
         bcimg.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +64,11 @@ public class HolidayCalendar extends AppCompatActivity {
 
     }
 
+    /*
+    * Append "/1" for holidays
+    * Append "/2" for leaves
+    * Append "/0" for absent
+    * */
     private ArrayList<String> getHolidayList(ArrayList<String> al) {
         al.add("31/07/2019"+"/1");
         al.add("26/07/2019"+"/1");

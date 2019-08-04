@@ -7,7 +7,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.trackschool.Model.Location;
@@ -44,12 +46,14 @@ public class Tracking extends AppCompatActivity implements OnMapReadyCallback {
     String driverId = "";
     EditText addresset;
     Geocoder geocoder;
+    ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracking);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
+        back = findViewById(R.id.back);
         mapView = (MapView) findViewById(R.id.map);
         addresset = findViewById(R.id.address);
         addresset.setKeyListener(null);
@@ -62,6 +66,12 @@ public class Tracking extends AppCompatActivity implements OnMapReadyCallback {
 
         geocoder = new Geocoder(this, Locale.getDefault());
 
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 
