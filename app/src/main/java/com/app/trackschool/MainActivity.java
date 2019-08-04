@@ -23,6 +23,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,6 +41,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    GridView gridview;
     FirebaseFunctions mFunctions;
 
     @Override
@@ -63,36 +66,24 @@ public class MainActivity extends AppCompatActivity
                             return;
                         }
 
-                        // Get new Instance ID token
                         String token = task.getResult().getToken();
 
-                        // Log and toast
                         Log.e("token", token);
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                        sendNotification(token).addOnSuccessListener(new OnSuccessListener<String>() {
-                            @Override
-                            public void onSuccess(String s) {
-                                Log.e("return", s);
-                            }
-                        });
+//                        sendNotification(token).addOnSuccessListener(new OnSuccessListener<String>() {
+//                            @Override
+//                            public void onSuccess(String s) {
+//                                Log.e("return", s);
+//                            }
+//                        });
                         db.collection("Parent").document("user/"+FirebaseAuth.getInstance().getCurrentUser().getUid()
                         +"/details").update("token",token);
-                        //Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
                     }
                 });
 
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -100,6 +91,34 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        /*
+        * Handling GridView
+        * */
+        gridview = findViewById(R.id.gridview);
+        gridview.setAdapter(new HomeGridAdapter(this));
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Toast.makeText(MainActivity.this, position+"", Toast.LENGTH_SHORT).show();
+                if(position == 0){
+                    startActivity(new Intent(MainActivity.this, Profile.class));
+                    return;
+                } else if(position == 1){
+                    startActivity(new Intent(MainActivity.this, Tracking.class));
+                    return;
+                } else if(position == 3){
+                    startActivity(new Intent(MainActivity.this, HolidayCalendar.class));
+                    return;
+                } else if(position == 5){
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(MainActivity.this, UserLogin.class));
+                    finish();
+                    return;
+                }
+            }
+        });
+
     }
 
     @Override
@@ -163,26 +182,28 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private Task<String> sendNotification(String token) {
-        // Create the arguments to the callable function.
-        Map<String, Object> data = new HashMap<>();
-        data.put("token", token);
-        data.put("message", "Hello one, your bus will arrive shortly, Don't be late");
-        data.put("title", "Bus");
-        data.put("push", true);
 
-        return mFunctions
-                .getHttpsCallable("sendNotification")
-                .call(data)
-                .continueWith(new Continuation<HttpsCallableResult, String>() {
-                    @Override
-                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-                        // This continuation runs on either success or failure, but if the task
-                        // has failed then getResult() will throw an Exception which will be
-                        // propagated down.
-                        String result = (String) task.getResult().getData();
-                        return result;
-                    }
-                });
-    }
+
+//    private Task<String> sendNotification(String token) {
+//        // Create the arguments to the callable function.
+//        Map<String, Object> data = new HashMap<>();
+//        data.put("token", token);
+//        data.put("message", "Hello one, your bus will arrive shortly, Don't be late");
+//        data.put("title", "Bus");
+//        data.put("push", true);
+//
+//        return mFunctions
+//                .getHttpsCallable("sendNotification")
+//                .call(data)
+//                .continueWith(new Continuation<HttpsCallableResult, String>() {
+//                    @Override
+//                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+//                        // This continuation runs on either success or failure, but if the task
+//                        // has failed then getResult() will throw an Exception which will be
+//                        // propagated down.
+//                        String result = (String) task.getResult().getData();
+//                        return result;
+//                    }
+//                });
+//    }
 }

@@ -1,10 +1,14 @@
 package com.app.trackschool;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.app.trackschool.Model.Location;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -27,6 +31,9 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.util.List;
+import java.util.Locale;
+
 public class Tracking extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -35,6 +42,8 @@ public class Tracking extends AppCompatActivity implements OnMapReadyCallback {
 //    DatabaseReference myRef;
     FirebaseFirestore db;
     String driverId = "";
+    EditText addresset;
+    Geocoder geocoder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +51,8 @@ public class Tracking extends AppCompatActivity implements OnMapReadyCallback {
         setContentView(R.layout.activity_tracking);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapView = (MapView) findViewById(R.id.map);
+        addresset = findViewById(R.id.address);
+        addresset.setKeyListener(null);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         mapView.getMapAsync(this);
@@ -49,12 +60,8 @@ public class Tracking extends AppCompatActivity implements OnMapReadyCallback {
         db = FirebaseFirestore.getInstance();
         db.collection("Parent");
 
+        geocoder = new Geocoder(this, Locale.getDefault());
 
-
-        //myRef = database.getReference("bus").child("id").child("position");
-
-//        Location ll = new Location(-34+"", 151+"");
-//        myRef.setValue(ll);
 
     }
 
@@ -73,6 +80,12 @@ public class Tracking extends AppCompatActivity implements OnMapReadyCallback {
         mMap = googleMap;
         if(driverId.equals("")) {
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            /********************************************
+             * TODO: Get assigned driver id from database.
+             */
+
+
             db.collection("Parent").document("user/"+uid+"/details")
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -81,6 +94,11 @@ public class Tracking extends AppCompatActivity implements OnMapReadyCallback {
                             if (task.isSuccessful()) {
                                 Log.e("details", task.getResult()+"");
                                 DocumentSnapshot document = task.getResult();
+
+                                /*******************************************
+                                * TODO: Get assigned driver id
+                                */
+
                                 driverId = document.get("driver_id").toString();
                                 DocumentReference docRef = db.collection("Drivers").document(driverId);
 
@@ -101,17 +119,34 @@ public class Tracking extends AppCompatActivity implements OnMapReadyCallback {
                                             value.setLatittude(snapshot.get("latittude").toString());
                                             value.setLongitude(snapshot.get("longitude").toString());
                                             assert value != null;
-                                            LatLng currentLocation = new LatLng(Double.parseDouble(value.getLatittude()),
+                                            LatLng location = new LatLng(Double.parseDouble(value.getLatittude()),
                                                     Double.parseDouble(value.getLongitude()));
 
-                                            MarkerOptions marker = new MarkerOptions().position(currentLocation);
 
+                                            MarkerOptions marker = new MarkerOptions().position(location);
+
+                                            List<Address> addresses;
+                                            try {
+                                                addresses = (List<Address>) geocoder.getFromLocation(
+                                                        Double.parseDouble(value.getLatittude()),
+                                                        Double.parseDouble(value.getLongitude()), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+                                                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                                                String city = addresses.get(0).getLocality();
+//                                                String state = addresses.get(0).getAdminArea();
+//                                                String country = addresses.get(0).getCountryName();
+//                                                String postalCode = addresses.get(0).getPostalCode();
+//                                                String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
+                                                addresset.setText(address + "," + city);
+                                            }catch (Exception ee){
+                                                ee.printStackTrace();
+                                            }
                                             // Changing marker icon
                                             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.school_bus));
                                             mMap.clear();
                                             mMap.addMarker(marker);
                                             final CameraPosition cameraPosition = new CameraPosition.Builder()
-                                                    .target(currentLocation)      // Sets the center of the map to User Position
+                                                    .target(location)      // Sets the center of the map to User Position
                                                     .zoom(16)                         // Sets the zoom
                                                     .bearing(0)                      // Sets the orientation of the camera to east
                                                     .tilt(30)                         // Sets the tilt of the camera to 30 degrees
@@ -132,41 +167,5 @@ public class Tracking extends AppCompatActivity implements OnMapReadyCallback {
                         }
                     });
         }
-
-        // Add a marker in Sydney and move the camera
-
-
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                // This method is called once with the initial value and again
-//                // whenever data at this location is updated.
-//                mMap.clear();
-//                Location value = dataSnapshot.getValue(Location.class);
-//                assert value != null;
-//                LatLng currentLocation = new LatLng(Double.parseDouble(value.getLatittude()),
-//                                Double.parseDouble(value.getLongitude()));
-//
-//                MarkerOptions marker = new MarkerOptions().position(currentLocation);
-//
-//                // Changing marker icon
-//                marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.school_bus));
-//
-//                mMap.addMarker(marker);
-//                final CameraPosition cameraPosition = new CameraPosition.Builder()
-//                        .target(currentLocation)      // Sets the center of the map to User Position
-//                        .zoom(16)                         // Sets the zoom
-//                        .bearing(0)                      // Sets the orientation of the camera to east
-//                        .tilt(30)                         // Sets the tilt of the camera to 30 degrees
-//                        .build();                         //
-//                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error) {
-//                // Failed to read value
-//                Log.w("not recieved", "Failed to read value.", error.toException());
-//            }
-//        });
     }
 }

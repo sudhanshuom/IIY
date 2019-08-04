@@ -12,4 +12,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <EditText
+        android:id="@+id/address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/appbar_padding"
+        android:background="#FFFFFF"
+        android:gravity="bottom"
+        android:hint="Address"
+        android:inputType="textShortMessage"
+        android:padding="@dimen/appbar_padding"
+        android:textSize="18dp"
+        android:translationZ="10dp" />
+
 </FrameLayout>

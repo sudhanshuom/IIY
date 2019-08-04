@@ -5,4 +5,12 @@
     <color name="colorAccent">#D81B60</color>
     <color name="quantum_cyan">#1BB2D8</color>
     <color name="white">#FFFFFF</color>
+
+
+    <color name="color1">#0000FF</color>
+    <color name="color2">#FF0000</color>
+    <color name="color3">#B0B801</color>
+    <color name="color4">#2EFF00</color>
+    <color name="color5">#1BB2D8</color>
+    <color name="color6">#D81B60</color>
 </resources>
