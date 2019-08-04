@@ -3,6 +3,9 @@
 To send notification
 
 Add firebase function dependecies
+```
+implementation 'com.google.firebase:firebase-functions:16.1.3'
+```
 
 -Call function as
 ```
