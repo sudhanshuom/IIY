@@ -115,6 +115,9 @@ public class MainActivity extends AppCompatActivity
                 } else if(position == 1){
                     startActivity(new Intent(MainActivity.this, Tracking.class));
                     return;
+                }else if(position == 2){
+                    startActivity(new Intent(MainActivity.this, ApplyForLeave.class));
+                    return;
                 } else if(position == 3){
                     startActivity(new Intent(MainActivity.this, HolidayCalendar.class));
                     return;
@@ -186,7 +189,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.track_location) {
             startActivity(new Intent(MainActivity.this, Tracking.class));
         } else if (id == R.id.apply_for_leave) {
-
+            startActivity(new Intent(MainActivity.this, ApplyForLeave.class));
         } else if (id == R.id.academic_calendar) {
             startActivity(new Intent(MainActivity.this, HolidayCalendar.class));
         } else if (id == R.id.fee) {
