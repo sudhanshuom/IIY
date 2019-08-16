@@ -47,7 +47,7 @@ public class UserLogin extends AppCompatActivity {
 
     private CheckBox show_hide_password;
     private EditText password;
-    private EditText admission;
+    private EditText emailet;
     private Animation shakeAnimation;
     Button loginButton;
     FirebaseAuth mAuth;
@@ -64,7 +64,8 @@ public class UserLogin extends AppCompatActivity {
         password = findViewById(R.id.passwordField);
         shakeAnimation = AnimationUtils.loadAnimation(this, R.anim.shake_animation);
         loginButton = findViewById(R.id.LoginButton);
-        admission = findViewById(R.id.usernameField);
+        emailet = findViewById(R.id.usernameField);
+
         show_hide_password
                 .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -109,9 +110,9 @@ public class UserLogin extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 boolean everythingCorrect = true;
-                if(admission.getText().toString().trim().equals("")){
+                if(emailet.getText().toString().trim().equals("")){
                     everythingCorrect = false;
-                    admission.startAnimation(shakeAnimation);
+                    emailet.startAnimation(shakeAnimation);
                     view.startAnimation(shakeAnimation);
                     new CustomToast().Show_Toast(UserLogin.this, getCurrentFocus(), "Enter a valid mobile number");
                     return;                }
@@ -130,7 +131,7 @@ public class UserLogin extends AppCompatActivity {
     }
 
     private void StartLogin(){
-        String email = admission.getText().toString().trim();
+        String email = emailet.getText().toString().trim();
         String passwordd = password.getText().toString().trim();
         progressDialog = ProgressDialog.show(UserLogin.this, "",
                 "Signing in Please wait...", false);
