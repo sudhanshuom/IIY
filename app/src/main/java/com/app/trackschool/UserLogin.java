@@ -114,7 +114,7 @@ public class UserLogin extends AppCompatActivity {
                     everythingCorrect = false;
                     emailet.startAnimation(shakeAnimation);
                     view.startAnimation(shakeAnimation);
-                    new CustomToast().Show_Toast(UserLogin.this, getCurrentFocus(), "Enter a valid mobile number");
+                    new CustomToast().Show_Toast(UserLogin.this, getCurrentFocus(), "Enter a valid Email.");
                     return;                }
                 if(password.getText().toString().trim().length() < 6){
                     everythingCorrect = false;
