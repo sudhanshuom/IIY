@@ -11,6 +11,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -25,10 +26,13 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.HttpsCallableResult;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -49,6 +53,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //startService(new Intent(getApplicationContext(), GetUpdatedDriverLocation.class));
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         if(FirebaseAuth.getInstance().getCurrentUser() == null){
             startActivity(new Intent(MainActivity.this, UserLogin.class));
@@ -86,6 +91,9 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        View view = navigationView.getHeaderView(0);
+        TextView navemail = view.findViewById(R.id.textView);
+        navemail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -110,6 +118,9 @@ public class MainActivity extends AppCompatActivity
                 } else if(position == 3){
                     startActivity(new Intent(MainActivity.this, HolidayCalendar.class));
                     return;
+                } else if(position == 4){
+                    startActivity(new Intent(MainActivity.this, ViewFees.class));
+                    return;
                 } else if(position == 5){
                     FirebaseAuth.getInstance().signOut();
                     startActivity(new Intent(MainActivity.this, UserLogin.class));
@@ -118,6 +129,17 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference cc = db.collection("AssignedStudents");
+        db.collection("StudentList").whereEqualTo("id", FirebaseAuth.getInstance().getCurrentUser().getUid()).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        // ...
+                        Log.e("dfadfa",queryDocumentSnapshots.getDocuments()+"");
+                        //Toast.makeText(getApplicationContext(), queryDocumentSnapshots+"", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
 
@@ -168,7 +190,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.academic_calendar) {
             startActivity(new Intent(MainActivity.this, HolidayCalendar.class));
         } else if (id == R.id.fee) {
-
+            startActivity(new Intent(MainActivity.this, ViewFees.class));
         }else if (id == R.id.log_out) {
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(MainActivity.this, UserLogin.class));
