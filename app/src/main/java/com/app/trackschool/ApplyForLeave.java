@@ -121,8 +121,5 @@ public class ApplyForLeave extends AppCompatActivity {
         //db.getDatePicker().setMaxDate(secondsSinceEpoch+Long.parseLong("432000000"));
         db.getDatePicker().setMinDate(secondsSinceEpoch);
         db.show();
-
     }
-
-
 }

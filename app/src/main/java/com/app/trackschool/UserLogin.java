@@ -52,12 +52,13 @@ public class UserLogin extends AppCompatActivity {
     Button loginButton;
     FirebaseAuth mAuth;
     ProgressDialog progressDialog;
+    View CurrentFocus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login);
-
+        CurrentFocus = getCurrentFocus();
         mAuth = FirebaseAuth.getInstance();
 
         show_hide_password = findViewById(R.id.show_hide_password);
@@ -114,13 +115,14 @@ public class UserLogin extends AppCompatActivity {
                     everythingCorrect = false;
                     emailet.startAnimation(shakeAnimation);
                     view.startAnimation(shakeAnimation);
-                    new CustomToast().Show_Toast(UserLogin.this, getCurrentFocus(), "Enter a valid Email.");
-                    return;                }
+                    new CustomToast().Show_Toast(UserLogin.this, CurrentFocus, "Enter a valid Email.");
+                    return;
+                }
                 if(password.getText().toString().trim().length() < 6){
                     everythingCorrect = false;
                     password.startAnimation(shakeAnimation);
                     view.startAnimation(shakeAnimation);
-                    new CustomToast().Show_Toast(UserLogin.this, getCurrentFocus(), "Password should be of atleast 6 characters");
+                    new CustomToast().Show_Toast(UserLogin.this, CurrentFocus, "Password should be of atleast 6 characters");
                     return;
                 }
                 if(everythingCorrect){

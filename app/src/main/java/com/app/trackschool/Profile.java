@@ -1,19 +1,19 @@
 package com.app.trackschool;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.app.trackschool.Model.Profile_model;
-import com.google.android.gms.tasks.Continuation;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,11 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.functions.FirebaseFunctions;
-import com.google.firebase.functions.HttpsCallableResult;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class Profile extends AppCompatActivity {
 
@@ -37,7 +34,7 @@ public class Profile extends AppCompatActivity {
 
     private TextView name, class_sec, admission_no, contact, gender, dob, father, mother,
             father_occupation, mother_occupation, address, city, state;
-    private ImageView backimg;
+    private ImageView backimg, profile;
 
 
     @Override
@@ -55,6 +52,7 @@ public class Profile extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         backimg = findViewById(R.id.back);
+        profile = findViewById(R.id.profile_image);
         name = findViewById(R.id.name);
         class_sec = findViewById(R.id.class_sec);
         admission_no = findViewById(R.id.admission_no);
@@ -73,14 +71,14 @@ public class Profile extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("user").child(uid).child("detail");
 
-//        Profile_model model = new Profile_model("234567891", "Fam Singh", "2nd B",
-//                "Tom efgh", "Sim mnop", "Buisnessman", "Home-maker",
-//                "Ez stays, Einstein house", "Noida", "U.P.", "Male",
-//                "19/02/2000","8874563211");
+//        Profile_model model = new Profile_model("Ez stays, Einstein house", "234567891", "Noida",
+//                "2nd B", "8874563211", "19/02/2000", "Tom efgh",
+//                "Businessman", "Male", "Sim mnop", "Home-maker",
+//                "Fam Singh","U.P.");
 //
-//        db.collection("Parent").document("user/"+uid+"/details").set(model);
+//        db.collection("Parent").document(uid).set(model);
 
-        db.collection("Parent").document("user/"+uid+"/details")
+        db.collection("Parent").document(uid)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -88,19 +86,19 @@ public class Profile extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             Profile_model value = document.toObject(Profile_model.class);
-                            name.setText(value.getName());
-                            class_sec.setText(value.getClass_sec());
-                            admission_no.setText(value.getAdmission_no());
-                            contact.setText(value.getContact());
-                            gender.setText(value.getGender());
-                            dob.setText(value.getDob());
-                            father.setText(value.getFather());
-                            mother.setText(value.getMother());
-                            father_occupation.setText(value.getFather_occupation());
-                            mother_occupation.setText(value.getMother_occupation());
-                            address.setText(value.getAddress());
-                            city.setText(value.getCity());
-                            state.setText(value.getState());
+                            name.setText(value.getStudent_name());
+                            class_sec.setText(value.getStudent_class());
+                            admission_no.setText(value.getStudent_admno());
+                            contact.setText(value.getStudent_contact());
+                            gender.setText(value.getStudent_gender());
+                            dob.setText(value.getStudent_dob());
+                            father.setText(value.getStudent_fname());
+                            mother.setText(value.getStudent_mname());
+                            father_occupation.setText(value.getStudent_focc());
+                            mother_occupation.setText(value.getStudent_mocc());
+                            address.setText(value.getStudent_address());
+                            city.setText(value.getStudent_city());
+                            state.setText(value.getStudent_state());
                             Log.e("success", document.getId() + " => " + document.getData());
 
                         } else {
@@ -109,39 +107,39 @@ public class Profile extends AppCompatActivity {
                     }
                 });
 
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                // This method is called once with the initial value and again
-//                // whenever data at this location is updated.
-//                Profile_model value = dataSnapshot.getValue(Profile_model.class);
-//                name.setText(value.getName());
-//                class_sec.setText(value.getClass_sec());
-//                admission_no.setText(value.getAdmission_no());
-//                contact.setText(value.getContact());
-//                gender.setText(value.getGender());
-//                dob.setText(value.getDob());
-//                father.setText(value.getFather());
-//                mother.setText(value.getMother());
-//                father_occupation.setText(value.getFather_occupation());
-//                mother_occupation.setText(value.getMother_occupation());
-//                address.setText(value.getAddress());
-//                city.setText(value.getCity());
-//                state.setText(value.getState());
-//                Log.d("successDB", "Value is: " + value.getName());
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error) {
-//                // Failed to read value
-//                Log.w("failReadingDB", "Failed to read value.", error.toException());
-//            }
-//        });
+        downloadProfileImage();
 
         backimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+
+    }
+
+    private void downloadProfileImage(){
+
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+
+
+        storageRef.child("profile_images/thumb/"+FirebaseAuth.getInstance().getCurrentUser().getUid()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Got the download URL for 'users/me/profile.png'
+                Log.e("uri", uri.toString());
+                profile.setImageURI(null);
+                profile.setBackground(null);
+                Glide.with(Profile.this)
+                        .load(uri)
+                        .asBitmap()
+                        .into(profile);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+                Log.e("exc", exception.toString());
             }
         });
 
