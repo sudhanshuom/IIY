@@ -109,7 +109,7 @@ public class Tracking extends AppCompatActivity implements OnMapReadyCallback {
             /********************************************
              * TODO: Get assigned driver id from database.
              */
-            db.collection("Parent").document("user/"+uid+"/details")
+            db.collection("Parent").document(uid)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
@@ -122,71 +122,75 @@ public class Tracking extends AppCompatActivity implements OnMapReadyCallback {
                                 * TODO: Get assigned driver id
                                 */
 
-                                driverId = document.get("driver_id").toString();
-                                if(driverId == null){
+                                if(document.get("driver_id") != null)
+                                    driverId = document.get("driver_id").toString();
+
+                                Log.e("driverid",driverId+"");
+                                if(driverId.equals("") || driverId == null){
                                     Toast.makeText(Tracking.this, "Driver Not Available", Toast.LENGTH_SHORT).show();
                                     return;
-                                }
-                                DocumentReference docRef = db.collection("Drivers").document(driverId);
+                                }else {
+                                    DocumentReference docRef = db.collection("Drivers").document(driverId);
 
-                                docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                                        @Nullable FirebaseFirestoreException e) {
-                                        if (e != null) {
-                                            Log.w("lisfail", "Listen failed.", e);
-                                            return;
-                                        }
+                                    docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                                            @Nullable FirebaseFirestoreException e) {
+                                            if (e != null) {
+                                                Log.w("lisfail", "Listen failed.", e);
+                                                return;
+                                            }
 
-                                        String source = snapshot != null && snapshot.getMetadata().hasPendingWrites()
-                                                ? "Local" : "Server";
+                                            String source = snapshot != null && snapshot.getMetadata().hasPendingWrites()
+                                                    ? "Local" : "Server";
 
-                                        if (snapshot != null && snapshot.exists()) {
-                                            Location value = new Location();
-                                            value.setLatittude(snapshot.get("latittude").toString());
-                                            value.setLongitude(snapshot.get("longitude").toString());
-                                            assert value != null;
-                                            LatLng location = new LatLng(Double.parseDouble(value.getLatittude()),
-                                                    Double.parseDouble(value.getLongitude()));
+                                            if (snapshot != null && snapshot.exists()) {
+                                                Location value = new Location();
+                                                value.setLatittude(snapshot.get("latitude").toString());
+                                                value.setLongitude(snapshot.get("longitude").toString());
+                                                assert value != null;
+                                                LatLng location = new LatLng(Double.parseDouble(value.getLatittude()),
+                                                        Double.parseDouble(value.getLongitude()));
 
 
-                                            MarkerOptions marker = new MarkerOptions().position(location);
+                                                MarkerOptions marker = new MarkerOptions().position(location);
 
-                                            List<Address> addresses;
-                                            try {
-                                                addresses = (List<Address>) geocoder.getFromLocation(
-                                                        Double.parseDouble(value.getLatittude()),
-                                                        Double.parseDouble(value.getLongitude()), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                                                List<Address> addresses;
+                                                try {
+                                                    addresses = (List<Address>) geocoder.getFromLocation(
+                                                            Double.parseDouble(value.getLatittude()),
+                                                            Double.parseDouble(value.getLongitude()), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
 
-                                                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-                                                String city = addresses.get(0).getLocality();
+                                                    String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                                                    String city = addresses.get(0).getLocality();
 //                                                String state = addresses.get(0).getAdminArea();
 //                                                String country = addresses.get(0).getCountryName();
 //                                                String postalCode = addresses.get(0).getPostalCode();
 //                                                String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
-                                                addresset.setText(address + "," + city);
-                                            }catch (Exception ee){
-                                                ee.printStackTrace();
-                                            }
-                                            // Changing marker icon
-                                            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.school_bus));
-                                            mMap.clear();
-                                            mMap.addMarker(marker);
-                                            final CameraPosition cameraPosition = new CameraPosition.Builder()
-                                                    .target(location)      // Sets the center of the map to User Position
-                                                    .zoom(16)                         // Sets the zoom
-                                                    .bearing(0)                      // Sets the orientation of the camera to east
-                                                    .tilt(30)                         // Sets the tilt of the camera to 30 degrees
-                                                    .build();                         //
-                                            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                                            Log.e("fetchdata", source + " data: " + snapshot.getData());
+                                                    addresset.setText(address + "," + city);
+                                                } catch (Exception ee) {
+                                                    ee.printStackTrace();
+                                                }
+                                                // Changing marker icon
+                                                marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.school_bus));
+                                                mMap.clear();
+                                                mMap.addMarker(marker);
+                                                final CameraPosition cameraPosition = new CameraPosition.Builder()
+                                                        .target(location)      // Sets the center of the map to User Position
+                                                        .zoom(16)                         // Sets the zoom
+                                                        .bearing(0)                      // Sets the orientation of the camera to east
+                                                        .tilt(30)                         // Sets the tilt of the camera to 30 degrees
+                                                        .build();                         //
+                                                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                                                Log.e("fetchdata", source + " data: " + snapshot.getData());
 
-                                        } else {
-                                            Log.e("fetchnull", source + " data: null");
+                                            } else {
+                                                Log.e("fetchnull", source + " data: null");
+                                            }
                                         }
-                                    }
-                                });
-                                Log.e("success", document.getId() + " => " + document.getData());
+                                    });
+                                    Log.e("success", document.getId() + " => " + document.getData());
+                                }
 
                             } else {
                                 Log.e("error", "Error getting documents.", task.getException());
