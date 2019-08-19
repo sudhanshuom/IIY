@@ -54,9 +54,9 @@ public class HolidayCalendar extends AppCompatActivity {
         ArrayList<String> holidays = new ArrayList<>();
         holidays = getHolidayList(holidays);
         List decorators = new ArrayList<>();
-        decorators.add(new ColorDecorator(holidays));
+        //decorators.add(new ColorDecorator(holidays));
         holidays = getLeaveDates(holidays);
-        decorators.add(new ColorDecorator(holidays));
+        //decorators.add(new ColorDecorator(holidays));
         holidays = getAbsentDate(holidays);
         decorators.add(new ColorDecorator(holidays));
         calendarView.setDecorators(decorators);

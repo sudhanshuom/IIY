@@ -6,8 +6,10 @@ import androidx.appcompat.widget.AppCompatTextView;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.location.Address;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -16,13 +18,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.app.trackschool.Model.Location;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.annotations.Nullable;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
 public class ApplyForLeave extends AppCompatActivity {
 
@@ -30,6 +44,8 @@ public class ApplyForLeave extends AppCompatActivity {
     private Button updateBtn;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private int year, month, day;
+    String driverId = "default";
+    HashMap<String, Object> hashMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,25 +79,54 @@ public class ApplyForLeave extends AppCompatActivity {
                 String holiday_from = from.getText().toString();
                 String holiday_to = to.getText().toString();
 
-                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.clear();
                 hashMap.put("reason", reason_holiday);
                 hashMap.put("from", holiday_from);
                 hashMap.put("to", holiday_to);
 
+
                 if (!TextUtils.isEmpty(reason_holiday) || !TextUtils.isEmpty(holiday_from) ||
                         !TextUtils.isEmpty(holiday_to) ){
-                    db.collection("Holiday").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
-                                Toast.makeText(ApplyForLeave.this, "Successfully updated", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(ApplyForLeave.this, MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                            }
-                        }
-                    });
+
+                    db.collection("Parent").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.e("details", task.getResult()+"");
+                                        DocumentSnapshot document = task.getResult();
+
+                                        /*******************************************
+                                         * TODO: Get assigned driver id
+                                         */
+
+                                        if(document.get("driver_id") != null)
+                                            driverId = document.get("driver_id").toString();
+
+                                        Log.e("driverid",driverId+"");
+                                        hashMap.put("driver_id", driverId);
+                                        db.collection("Holiday").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                .set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()){
+                                                    Toast.makeText(ApplyForLeave.this, "Successfully updated", Toast.LENGTH_SHORT).show();
+                                                    Intent intent = new Intent(ApplyForLeave.this, MainActivity.class);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    startActivity(intent);
+                                                }
+                                            }
+                                        });
+
+
+                                    } else {
+                                        Log.e("error", "Error getting documents.", task.getException());
+                                    }
+                                }
+                            });
+
+
                 }else {
                     Toast.makeText(ApplyForLeave.this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
                 }

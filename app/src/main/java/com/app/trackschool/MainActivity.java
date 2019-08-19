@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.app.trackschool.Model.Profile_model;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,6 +36,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.functions.FirebaseFunctions;
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     GridView gridview;
-    FirebaseFunctions mFunctions;
+    //FirebaseFunctions mFunctions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,31 +69,31 @@ public class MainActivity extends AppCompatActivity
             return;
         }
 
-        mFunctions = FirebaseFunctions.getInstance();
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.e("instanceFail", "getInstanceId failed", task.getException());
-                            return;
-                        }
-
-                        String token = task.getResult().getToken();
-
-                        Log.e("token", token);
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-//                        sendNotification(token).addOnSuccessListener(new OnSuccessListener<String>() {
-//                            @Override
-//                            public void onSuccess(String s) {
-//                                Log.e("return", s);
-//                            }
-//                        });
-                        db.collection("Parent").document("user/"+FirebaseAuth.getInstance().getCurrentUser().getUid()
-                        +"/details").update("token",token);
-                    }
-                });
+//        mFunctions = FirebaseFunctions.getInstance();
+//        FirebaseInstanceId.getInstance().getInstanceId()
+//                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+//                        if (!task.isSuccessful()) {
+//                            Log.e("instanceFail", "getInstanceId failed", task.getException());
+//                            return;
+//                        }
+//
+//                        String token = task.getResult().getToken();
+//
+//                        Log.e("token", token);
+//                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//
+////                        sendNotification(token).addOnSuccessListener(new OnSuccessListener<String>() {
+////                            @Override
+////                            public void onSuccess(String s) {
+////                                Log.e("return", s);
+////                            }
+////                        });
+//                        db.collection("Parent").document("user/"+FirebaseAuth.getInstance().getCurrentUser().getUid()
+//                        +"/details").update("token",token);
+//                    }
+//                });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -168,8 +170,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        return false;
     }
 
     @Override
@@ -180,9 +181,6 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -215,29 +213,28 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setProfileImage(final ImageView profile){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        db.collection("Parent").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
 
+                            Glide.with(MainActivity.this)
+                                    .load(Uri.parse(document.get("image").toString()))
+                                    .asBitmap()
+                                    .into(profile);
 
-        storageRef.child("profile_images/thumb/"+FirebaseAuth.getInstance().getCurrentUser().getUid()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                // Got the download URL for 'users/me/profile.png'
-                Log.e("uri", uri.toString());
-                profile.setImageURI(null);
-                profile.setBackground(null);
-                Glide.with(MainActivity.this)
-                        .load(uri)
-                        .asBitmap()
-                        .into(profile);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-                Log.e("exc", exception.toString());
-            }
-        });
+                            Log.e("success", document.getId() + " => " + document.getData());
+
+                        } else {
+                            Log.e("error", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
 
     }
 

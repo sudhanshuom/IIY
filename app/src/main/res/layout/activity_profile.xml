@@ -41,22 +41,43 @@
             android:layout_height="wrap_content"
             android:padding="5dp">
 
-            <ImageView
-                android:id="@+id/profile_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/user"
-                android:padding="9dp"
-                android:layout_marginLeft="@dimen/appbar_padding"/>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                app:cardCornerRadius="37dp"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/appbar_padding">
+
+                <ImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:scaleType="fitXY"
+                    android:contentDescription="@string/nav_header_desc"
+                    android:src="@drawable/user" />
+
+            </androidx.cardview.widget.CardView>
+
+
+            <!--<ImageView-->
+                <!--android:id="@+id/profile_image"-->
+                <!--android:layout_width="100dp"-->
+                <!--android:layout_height="100dp"-->
+                <!--android:background="@drawable/user"-->
+                <!--android:padding="9dp"-->
+                <!--android:layout_marginLeft="@dimen/appbar_padding"/>-->
 
             <TextView
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/profile_image"
+                android:layout_toEndOf="@id/card"
                 android:text="XXXXXXXX XXXXXXXX"
                 android:scrollHorizontally="true"
                 android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
@@ -65,8 +86,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/name"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
-                android:layout_toEndOf="@id/profile_image"
+                android:layout_toEndOf="@id/card"
                 android:text="Class: "
                 android:textSize="16dp"
                 android:textStyle="bold" />

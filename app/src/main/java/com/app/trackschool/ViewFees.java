@@ -37,7 +37,7 @@ public class ViewFees extends AppCompatActivity {
         });
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Students").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+        db.collection("Parent").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override

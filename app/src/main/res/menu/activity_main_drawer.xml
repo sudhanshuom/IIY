@@ -6,23 +6,23 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/profile"
-            android:icon="@drawable/profile"
+            android:icon="@drawable/profilepng"
             android:title="Profile" />
         <item
             android:id="@+id/track_location"
-            android:icon="@drawable/tracking"
+            android:icon="@drawable/trackpng"
             android:title="Track Location" />
         <item
             android:id="@+id/apply_for_leave"
-            android:icon="@drawable/apply_leave"
+            android:icon="@drawable/apply_leavepng"
             android:title="Apply For Leave" />
         <item
             android:id="@+id/academic_calendar"
-            android:icon="@drawable/academic_calendar"
+            android:icon="@drawable/academic_calendarpng"
             android:title="Academic Calendar" />
         <item
             android:id="@+id/fee"
-            android:icon="@drawable/pay_fees"
+            android:icon="@drawable/payfeepng"
             android:title="Fees" />
 
     </group>
@@ -30,7 +30,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/log_out"
-            android:icon="@drawable/logout"
+            android:icon="@drawable/logoutpng"
             android:title="Log Out" />
     </group>
 

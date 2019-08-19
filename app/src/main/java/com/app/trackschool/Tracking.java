@@ -109,7 +109,7 @@ public class Tracking extends AppCompatActivity implements OnMapReadyCallback {
             /********************************************
              * TODO: Get assigned driver id from database.
              */
-            db.collection("Students").document(uid)
+            db.collection("Parent").document(uid)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override

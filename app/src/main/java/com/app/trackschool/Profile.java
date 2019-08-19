@@ -31,6 +31,7 @@ public class Profile extends AppCompatActivity {
     FirebaseUser currentUser;
     FirebaseDatabase database;
     DatabaseReference myRef;
+    Uri profileimg;
 
     private TextView name, class_sec, admission_no, contact, gender, dob, father, mother,
             father_occupation, mother_occupation, address, city, state;
@@ -67,6 +68,7 @@ public class Profile extends AppCompatActivity {
         city = findViewById(R.id.city);
         state = findViewById(R.id.state);
 
+
         String uid = currentUser.getUid();
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("user").child(uid).child("detail");
@@ -99,6 +101,10 @@ public class Profile extends AppCompatActivity {
                             address.setText(value.getStudent_address());
                             city.setText(value.getStudent_city());
                             state.setText(value.getStudent_state());
+
+                            profileimg = Uri.parse(document.get("image").toString());
+                            downloadProfileImage(profileimg);
+
                             Log.e("success", document.getId() + " => " + document.getData());
 
                         } else {
@@ -106,8 +112,6 @@ public class Profile extends AppCompatActivity {
                         }
                     }
                 });
-
-        downloadProfileImage();
 
         backimg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,30 +122,14 @@ public class Profile extends AppCompatActivity {
 
     }
 
-    private void downloadProfileImage(){
+    private void downloadProfileImage(Uri uri){
 
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-
-
-        storageRef.child("profile_images/thumb/"+FirebaseAuth.getInstance().getCurrentUser().getUid()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                // Got the download URL for 'users/me/profile.png'
-                Log.e("uri", uri.toString());
-                profile.setImageURI(null);
-                profile.setBackground(null);
-                Glide.with(Profile.this)
-                        .load(uri)
-                        .asBitmap()
-                        .into(profile);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-                Log.e("exc", exception.toString());
-            }
-        });
+        profile.setImageURI(null);
+        profile.setBackground(null);
+        Glide.with(Profile.this)
+                .load(uri)
+                .asBitmap()
+                .into(profile);
 
     }
 
