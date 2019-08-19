@@ -74,7 +74,7 @@ public class Profile extends AppCompatActivity {
 //        Profile_model model = new Profile_model("Ez stays, Einstein house", "234567891", "Noida",
 //                "2nd B", "8874563211", "19/02/2000", "Tom efgh",
 //                "Businessman", "Male", "Sim mnop", "Home-maker",
-//                "Fam Singh","U.P.");
+//                "Fam Singh","U.P.", "bcde@gmail.com", FirebaseAuth.getInstance().getCurrentUser().getUid());
 //
 //        db.collection("Parent").document(uid).set(model);
 

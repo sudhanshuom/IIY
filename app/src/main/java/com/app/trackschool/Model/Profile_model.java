@@ -3,12 +3,12 @@ package com.app.trackschool.Model;
 public class Profile_model {
     String student_address, student_admno, student_city, student_class, student_contact, student_dob,
             student_fname, student_focc, student_gender, student_mname, student_mocc, student_name,
-            student_state;
+            student_state, student_email, uid;
 
     public Profile_model() {
     }
 
-    public Profile_model(String student_address, String student_admno, String student_city, String student_class, String student_contact, String student_dob, String student_fname, String student_focc, String student_gender, String student_mname, String student_mocc, String student_name, String student_state) {
+    public Profile_model(String student_address, String student_admno, String student_city, String student_class, String student_contact, String student_dob, String student_fname, String student_focc, String student_gender, String student_mname, String student_mocc, String student_name, String student_state, String student_email, String uid) {
         this.student_address = student_address;
         this.student_admno = student_admno;
         this.student_city = student_city;
@@ -22,6 +22,8 @@ public class Profile_model {
         this.student_mocc = student_mocc;
         this.student_name = student_name;
         this.student_state = student_state;
+        this.student_email = student_email;
+        this.uid = uid;
     }
 
     public String getStudent_address() {

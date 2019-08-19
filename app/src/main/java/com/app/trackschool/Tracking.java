@@ -109,7 +109,7 @@ public class Tracking extends AppCompatActivity implements OnMapReadyCallback {
             /********************************************
              * TODO: Get assigned driver id from database.
              */
-            db.collection("Parent").document(uid)
+            db.collection("Students").document(uid)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
@@ -126,7 +126,7 @@ public class Tracking extends AppCompatActivity implements OnMapReadyCallback {
                                     driverId = document.get("driver_id").toString();
 
                                 Log.e("driverid",driverId+"");
-                                if(driverId.equals("") || driverId == null){
+                                if(driverId.equals("") || driverId.equalsIgnoreCase("default") || driverId == null){
                                     Toast.makeText(Tracking.this, "Driver Not Available", Toast.LENGTH_SHORT).show();
                                     return;
                                 }else {

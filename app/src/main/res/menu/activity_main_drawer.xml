@@ -32,8 +32,6 @@
             android:id="@+id/log_out"
             android:icon="@drawable/logout"
             android:title="Log Out" />
-
     </group>
-
 
 </menu>

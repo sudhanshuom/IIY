@@ -28,6 +28,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class UserLogin extends AppCompatActivity {
 
@@ -147,9 +150,30 @@ public class UserLogin extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.e("login", "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(UserLogin.this, MainActivity.class));
-                            progressDialog.cancel();
-                            finish();
+                            FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+                            DocumentReference docIdRef = rootRef.collection("Parent").document(user.getUid());
+                            docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists()) {
+                                            startActivity(new Intent(UserLogin.this, MainActivity.class));
+                                            progressDialog.cancel();
+                                            finish();
+                                            Log.d("docstatus", "Document exists!");
+                                        } else {
+                                            FirebaseAuth.getInstance().signOut();
+                                            progressDialog.cancel();
+                                            Toast.makeText(UserLogin.this, "Login Fail", Toast.LENGTH_LONG).show();
+                                            Log.d("docstatus", "Document does not exist!");
+                                        }
+                                    } else {
+                                        Log.d("FailLoad", "Failed with: ", task.getException());
+                                    }
+                                }
+                            });
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.e("errorlogin", "signInWithEmail:failure", task.getException());
