@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -45,6 +46,7 @@ public class ApplyForLeave extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private int year, month, day;
     String driverId = "default";
+    ImageView back;
     HashMap<String, Object> hashMap = new HashMap<>();
 
     @Override
@@ -56,6 +58,14 @@ public class ApplyForLeave extends AppCompatActivity {
         from = findViewById(R.id.holiday_from);
         to = findViewById(R.id.holiday_upto);
         updateBtn = findViewById(R.id.holiday_update_btn);
+        back = findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         from.setKeyListener(null);
         to.setKeyListener(null);
@@ -106,6 +116,9 @@ public class ApplyForLeave extends AppCompatActivity {
 
                                         Log.e("driverid",driverId+"");
                                         hashMap.put("driver_id", driverId);
+                                        hashMap.put("image", document.get("image").toString());
+                                        hashMap.put("name", document.get("student_name").toString());
+                                        hashMap.put("parent_id", document.get("uid").toString());
                                         db.collection("Holiday").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                                 .set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
@@ -166,5 +179,11 @@ public class ApplyForLeave extends AppCompatActivity {
         //db.getDatePicker().setMaxDate(secondsSinceEpoch+Long.parseLong("432000000"));
         db.getDatePicker().setMinDate(secondsSinceEpoch);
         db.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

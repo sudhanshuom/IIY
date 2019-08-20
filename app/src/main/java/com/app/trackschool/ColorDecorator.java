@@ -24,7 +24,7 @@ public class ColorDecorator implements DayDecorator {
         String str[] = cell.getDate().toString().split(" ");
         String date = str[5]+str[1]+str[2];
         for(String s : holiday){
-            String ss[] = s.trim().split("/");
+            String ss[] = s.trim().split("-");
             String dd = ss[2]+month[Integer.parseInt(ss[1]) - 1]+ss[0];
             int color = colo[Integer.parseInt(ss[3])];
             Log.e("curdt", date+"  "+dd);

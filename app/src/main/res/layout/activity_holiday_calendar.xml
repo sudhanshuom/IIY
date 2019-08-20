@@ -40,62 +40,95 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <TableLayout
-        android:id="@+id/ll"
+    <!--<TableLayout-->
+        <!--android:id="@+id/ll"-->
+        <!--android:layout_below="@+id/appbar"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerHorizontal="true">-->
+
+        <!--<TableRow>-->
+
+            <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:background="#0000FF"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:ems="5"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:gravity="center"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:padding="5dp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:text="Leaves"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:textAppearance="@style/TextAppearance.AppCompat.Body1"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:textSize="18sp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:textStyle="bold" />&ndash;&gt;-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="#FF0000"-->
+                <!--android:ems="5"-->
+                <!--android:gravity="center"-->
+                <!--android:padding="5dp"-->
+                <!--android:text="Holiday"-->
+                <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+                <!--android:textSize="18sp"-->
+                <!--android:textStyle="bold" />-->
+
+            <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:background="#00FF00"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:ems="5"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:gravity="center"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:padding="5dp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:text="Event"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:textAppearance="@style/TextAppearance.AppCompat.Body1"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:textSize="18sp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:textStyle="bold" />&ndash;&gt;-->
+        <!--</TableRow>-->
+
+    <!--</TableLayout>-->
+
+    <View
+        android:id="@+id/vvv"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_below="@+id/appbar"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="16dp"
+        android:background="#FF0000"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true">
-
-        <TableRow>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#0000FF"
-                android:ems="5"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="Leaves"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#FF0000"
-                android:ems="5"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="Holiday"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#00FF00"
-                android:ems="5"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="Event"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </TableRow>
-
-    </TableLayout>
+        android:layout_alignBottom="@+id/vvv"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/vvv"
+        android:fontFamily="sans-serif"
+        android:text="Holidays"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="22sp"
+        android:textStyle="bold" />
 
     <com.imanoweb.calendarview.CustomCalendarView
         android:id="@+id/calendar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll"
+        android:layout_below="@+id/vvv"
         android:layout_marginTop="20dp">
 
     </com.imanoweb.calendarview.CustomCalendarView>
+
+    <TextView
+        android:id="@+id/reason"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/calendar"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:fontFamily="sans-serif"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="18sp" />
 
 </RelativeLayout>

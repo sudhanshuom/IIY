@@ -47,7 +47,7 @@ public class ViewFees extends AppCompatActivity {
 
                             if(document.get("fair") != null) {
                                 loadfair.setVisibility(View.GONE);
-                                fairtv.setText("Rs. " + document.get("fair").toString());
+                                fairtv.setText("Total fair: Rs. " + document.get("fair").toString());
                             }
                         }
                     }

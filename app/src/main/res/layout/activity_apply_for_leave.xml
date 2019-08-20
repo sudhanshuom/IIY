@@ -61,7 +61,7 @@
         android:background="@drawable/register_page_input_fields_background"
         android:ems="10"
         android:gravity="start|top"
-        android:hint="Reason fot holiday"
+        android:hint="Reason for holiday"
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
