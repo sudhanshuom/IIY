@@ -4,12 +4,13 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
+import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -22,12 +23,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -53,7 +50,6 @@ public class UserLogin extends AppCompatActivity {
     private EditText emailet;
     private Animation shakeAnimation;
     Button loginButton;
-    FirebaseAuth mAuth;
     ProgressDialog progressDialog;
     View CurrentFocus;
 
@@ -62,7 +58,6 @@ public class UserLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login);
         CurrentFocus = getCurrentFocus();
-        mAuth = FirebaseAuth.getInstance();
 
         show_hide_password = findViewById(R.id.show_hide_password);
         password = findViewById(R.id.passwordField);
@@ -136,55 +131,90 @@ public class UserLogin extends AppCompatActivity {
     }
 
     private void StartLogin(){
-        String email = emailet.getText().toString().trim();
-        String passwordd = password.getText().toString().trim();
+        final String adno = emailet.getText().toString().trim();
+        final String passwordd = password.getText().toString().trim();
         progressDialog = ProgressDialog.show(UserLogin.this, "",
                 "Signing in Please wait...", false);
         progressDialog.setCancelable(false);
         progressDialog.show();
-        mAuth.signInWithEmailAndPassword(email, passwordd)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.e("login", "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
-                            DocumentReference docIdRef = rootRef.collection("Parent").document(user.getUid());
-                            docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        DocumentSnapshot document = task.getResult();
-                                        if (document.exists()) {
-                                            startActivity(new Intent(UserLogin.this, MainActivity.class));
-                                            progressDialog.cancel();
-                                            finish();
-                                            Log.d("docstatus", "Document exists!");
-                                        } else {
-                                            FirebaseAuth.getInstance().signOut();
-                                            progressDialog.cancel();
-                                            Toast.makeText(UserLogin.this, "Login Fail", Toast.LENGTH_LONG).show();
-                                            Log.d("docstatus", "Document does not exist!");
-                                        }
-                                    } else {
-                                        Log.d("FailLoad", "Failed with: ", task.getException());
-                                    }
-                                }
-                            });
 
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.e("errorlogin", "signInWithEmail:failure", task.getException());
-                            Toast.makeText(UserLogin.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            progressDialog.cancel();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docIdRef = db.collection("Parent").document("S"+adno);
+        docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        String phone = document.get("student_contact")+"";
+                        Log.e("docstatus", "Document exists!" + document.getData());
+                        if(phone.equals(passwordd)) {
+                            SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.putString("admissionNo", adno);
+                            editor.putString("phone",passwordd);
+                            editor.commit();
+                            editor.apply();
+                            Log.e("shared", sharedpreferences.getString("admissionNo", "NULL"));
+                            startActivity(new Intent(UserLogin.this, MainActivity.class));
                         }
-
-                        // ...
+                        progressDialog.cancel();
+                        finish();
+                    } else {
+                        progressDialog.cancel();
+                        Toast.makeText(UserLogin.this, "Login Fail", Toast.LENGTH_LONG).show();
+                        Log.e("docstatus", "Document does not exist!");
                     }
-                });
+                } else {
+                    Log.e("FailLoad", "Failed with: ", task.getException());
+                }
+            }
+        });
+
+
+//        mAuth.signInWithEmailAndPassword(email, passwordd)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            // Sign in success, update UI with the signed-in user's information
+//                            Log.e("login", "signInWithEmail:success");
+//                            FirebaseUser user = mAuth.getCurrentUser();
+//                            FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+//                            DocumentReference docIdRef = rootRef.collection("Parent").document(user.getUid());
+//                            docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                                    if (task.isSuccessful()) {
+//                                        DocumentSnapshot document = task.getResult();
+//                                        if (document.exists()) {
+//                                            startActivity(new Intent(UserLogin.this, MainActivity.class));
+//                                            progressDialog.cancel();
+//                                            finish();
+//                                            Log.d("docstatus", "Document exists!");
+//                                        } else {
+//                                            FirebaseAuth.getInstance().signOut();
+//                                            progressDialog.cancel();
+//                                            Toast.makeText(UserLogin.this, "Login Fail", Toast.LENGTH_LONG).show();
+//                                            Log.d("docstatus", "Document does not exist!");
+//                                        }
+//                                    } else {
+//                                        Log.d("FailLoad", "Failed with: ", task.getException());
+//                                    }
+//                                }
+//                            });
+//
+//                        } else {
+//                            // If sign in fails, display a message to the user.
+//                            Log.e("errorlogin", "signInWithEmail:failure", task.getException());
+//                            Toast.makeText(UserLogin.this, "Authentication failed.",
+//                                    Toast.LENGTH_SHORT).show();
+//                            progressDialog.cancel();
+//                        }
+//
+//                        // ...
+//                    }
+//                });
     }
 
     public void StartForgotPassword(View v) {

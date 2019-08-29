@@ -185,73 +185,73 @@
                 android:layout_height="2dp"
                 android:background="#4B4343"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:paddingBottom="5dp">
+            <!--<RelativeLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:padding="5dp"-->
+                <!--android:paddingBottom="5dp">-->
 
-                <TextView
-                    android:id="@+id/gendertv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:text="Gender"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                    <!--android:id="@+id/gendertv"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="50dp"-->
+                    <!--android:text="Gender"-->
+                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+                    <!--android:textSize="18sp"-->
+                    <!--android:textStyle="bold" />-->
 
-                <TextView
-                    android:id="@+id/gender"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/gendertv"
-                    android:layout_alignStart="@+id/gendertv"
-                    android:text="XXXXX"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                    <!--android:id="@+id/gender"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@+id/gendertv"-->
+                    <!--android:layout_alignStart="@+id/gendertv"-->
+                    <!--android:text="XXXXX"-->
+                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:textStyle="bold" />-->
 
-            </RelativeLayout>
+            <!--</RelativeLayout>-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#4B4343"/>
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="2dp"-->
+                <!--android:background="#4B4343"/>-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:paddingBottom="5dp">
+            <!--<RelativeLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:padding="5dp"-->
+                <!--android:paddingBottom="5dp">-->
 
-                <TextView
-                    android:id="@+id/dobtv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:text="Date of Birth"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                    <!--android:id="@+id/dobtv"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="50dp"-->
+                    <!--android:text="Date of Birth"-->
+                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+                    <!--android:textSize="18sp"-->
+                    <!--android:textStyle="bold" />-->
 
-                <TextView
-                    android:id="@+id/date_of_birth"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/dobtv"
-                    android:layout_alignStart="@+id/dobtv"
-                    android:text="XX-XX-XXXX"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                    <!--android:id="@+id/date_of_birth"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@+id/dobtv"-->
+                    <!--android:layout_alignStart="@+id/dobtv"-->
+                    <!--android:text="XX-XX-XXXX"-->
+                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:textStyle="bold" />-->
 
-            </RelativeLayout>
+            <!--</RelativeLayout>-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#4B4343"/>
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="2dp"-->
+                <!--android:background="#4B4343"/>-->
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -287,209 +287,209 @@
                 android:layout_height="2dp"
                 android:background="#4B4343"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:paddingBottom="5dp">
+            <!--<RelativeLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:padding="5dp"-->
+                <!--android:paddingBottom="5dp">-->
 
-                <TextView
-                    android:id="@+id/mothertv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:text="Mother Name"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                    <!--android:id="@+id/mothertv"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="50dp"-->
+                    <!--android:text="Mother Name"-->
+                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+                    <!--android:textSize="18sp"-->
+                    <!--android:textStyle="bold" />-->
 
-                <TextView
-                    android:id="@+id/mother"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/mothertv"
-                    android:layout_alignStart="@+id/mothertv"
-                    android:text="XXXXXX XXXXXX"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                    <!--android:id="@+id/mother"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@+id/mothertv"-->
+                    <!--android:layout_alignStart="@+id/mothertv"-->
+                    <!--android:text="XXXXXX XXXXXX"-->
+                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:textStyle="bold" />-->
 
-            </RelativeLayout>
+            <!--</RelativeLayout>-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#4B4343"/>
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="2dp"-->
+                <!--android:background="#4B4343"/>-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:paddingBottom="5dp">
+            <!--<RelativeLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:padding="5dp"-->
+                <!--android:paddingBottom="5dp">-->
 
-                <TextView
-                    android:id="@+id/fatheroccutv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:text="Father's Occupation"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                    <!--android:id="@+id/fatheroccutv"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="50dp"-->
+                    <!--android:text="Father's Occupation"-->
+                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+                    <!--android:textSize="18sp"-->
+                    <!--android:textStyle="bold" />-->
 
-                <TextView
-                    android:id="@+id/fatheroccu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/fatheroccutv"
-                    android:layout_alignStart="@+id/fatheroccutv"
-                    android:text="XXXXXX XXXXXX"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                    <!--android:id="@+id/fatheroccu"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@+id/fatheroccutv"-->
+                    <!--android:layout_alignStart="@+id/fatheroccutv"-->
+                    <!--android:text="XXXXXX XXXXXX"-->
+                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:textStyle="bold" />-->
 
-            </RelativeLayout>
+            <!--</RelativeLayout>-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#4B4343"/>
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="2dp"-->
+                <!--android:background="#4B4343"/>-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:paddingBottom="5dp">
+            <!--<RelativeLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:padding="5dp"-->
+                <!--android:paddingBottom="5dp">-->
 
-                <TextView
-                    android:id="@+id/motheroccutv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:text="Mother's Occupation"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                    <!--android:id="@+id/motheroccutv"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="50dp"-->
+                    <!--android:text="Mother's Occupation"-->
+                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+                    <!--android:textSize="18sp"-->
+                    <!--android:textStyle="bold" />-->
 
-                <TextView
-                    android:id="@+id/motheroccu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/motheroccutv"
-                    android:layout_alignStart="@+id/motheroccutv"
-                    android:text="XXXXXX XXXXXX"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                    <!--android:id="@+id/motheroccu"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@+id/motheroccutv"-->
+                    <!--android:layout_alignStart="@+id/motheroccutv"-->
+                    <!--android:text="XXXXXX XXXXXX"-->
+                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:textStyle="bold" />-->
 
-            </RelativeLayout>
+            <!--</RelativeLayout>-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#4B4343"/>
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="2dp"-->
+                <!--android:background="#4B4343"/>-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:paddingBottom="5dp">
+            <!--<RelativeLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:padding="5dp"-->
+                <!--android:paddingBottom="5dp">-->
 
-                <TextView
-                    android:id="@+id/addresstv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:text="Address"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                    <!--android:id="@+id/addresstv"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="50dp"-->
+                    <!--android:text="Address"-->
+                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+                    <!--android:textSize="18sp"-->
+                    <!--android:textStyle="bold" />-->
 
-                <TextView
-                    android:id="@+id/address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/addresstv"
-                    android:layout_alignStart="@+id/addresstv"
-                    android:text="XXXXXX XXXXXX"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                    <!--android:id="@+id/address"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@+id/addresstv"-->
+                    <!--android:layout_alignStart="@+id/addresstv"-->
+                    <!--android:text="XXXXXX XXXXXX"-->
+                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:textStyle="bold" />-->
 
-            </RelativeLayout>
+            <!--</RelativeLayout>-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#4B4343"/>
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="2dp"-->
+                <!--android:background="#4B4343"/>-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:paddingBottom="5dp">
+            <!--<RelativeLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:padding="5dp"-->
+                <!--android:paddingBottom="5dp">-->
 
-                <TextView
-                    android:id="@+id/citytv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:text="City(District)"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                    <!--android:id="@+id/citytv"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="50dp"-->
+                    <!--android:text="City(District)"-->
+                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+                    <!--android:textSize="18sp"-->
+                    <!--android:textStyle="bold" />-->
 
-                <TextView
-                    android:id="@+id/city"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/citytv"
-                    android:layout_alignStart="@+id/citytv"
-                    android:text="XXXXXX XXXXXX"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                    <!--android:id="@+id/city"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@+id/citytv"-->
+                    <!--android:layout_alignStart="@+id/citytv"-->
+                    <!--android:text="XXXXXX XXXXXX"-->
+                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:textStyle="bold" />-->
 
-            </RelativeLayout>
+            <!--</RelativeLayout>-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#4B4343"/>
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="2dp"-->
+                <!--android:background="#4B4343"/>-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:paddingBottom="5dp">
+            <!--<RelativeLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:padding="5dp"-->
+                <!--android:paddingBottom="5dp">-->
 
-                <TextView
-                    android:id="@+id/statetv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:text="State"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                    <!--android:id="@+id/statetv"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="50dp"-->
+                    <!--android:text="State"-->
+                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+                    <!--android:textSize="18sp"-->
+                    <!--android:textStyle="bold" />-->
 
-                <TextView
-                    android:id="@+id/state"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/statetv"
-                    android:layout_alignStart="@+id/statetv"
-                    android:text="XXXXXX XXXXXX"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                    <!--android:id="@+id/state"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@+id/statetv"-->
+                    <!--android:layout_alignStart="@+id/statetv"-->
+                    <!--android:text="XXXXXX XXXXXX"-->
+                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:textStyle="bold" />-->
 
-            </RelativeLayout>
+            <!--</RelativeLayout>-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#4B4343"/>
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="2dp"-->
+                <!--android:background="#4B4343"/>-->
 
         </LinearLayout>
     </ScrollView>

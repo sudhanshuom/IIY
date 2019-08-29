@@ -1,30 +1,21 @@
 package com.app.trackschool;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-
-import com.app.trackschool.Model.Profile_model;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
+import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import com.google.android.material.navigation.NavigationView;
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
@@ -32,42 +23,39 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.functions.FirebaseFunctions;
-import com.google.firebase.functions.HttpsCallableResult;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     GridView gridview;
-    //FirebaseFunctions mFunctions;
+    private SharedPreferences sharedPreferences;
+    private String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //startService(new Intent(getApplicationContext(), GetUpdatedDriverLocation.class));
-        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-        if(FirebaseAuth.getInstance().getCurrentUser() == null){
-            startActivity(new Intent(MainActivity.this, UserLogin.class));
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        uid = sharedPreferences.getString("admissionNo","NULL");
+
+        if(uid.equals("NULL")) {
+            // Opens login/signup Activity
+            Intent login_Session = new Intent(MainActivity.this, UserLogin.class);
+            startActivity(login_Session);
             finish();
             return;
         }
+
+        //startService(new Intent(getApplicationContext(), GetUpdatedDriverLocation.class));
+//        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+//        if(FirebaseAuth.getInstance().getCurrentUser() == null){
+//            startActivity(new Intent(MainActivity.this, UserLogin.class));
+//            finish();
+//            return;
+//        }
 
 //        mFunctions = FirebaseFunctions.getInstance();
 //        FirebaseInstanceId.getInstance().getInstanceId()
@@ -104,7 +92,7 @@ public class MainActivity extends AppCompatActivity
         ImageView imageView = view.findViewById(R.id.imageView);
         setProfileImage(imageView);
 
-        navemail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        //navemail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -136,24 +124,16 @@ public class MainActivity extends AppCompatActivity
                     startActivity(new Intent(MainActivity.this, ViewFees.class));
                     return;
                 } else if(position == 5){
-                    FirebaseAuth.getInstance().signOut();
+//                    FirebaseAuth.getInstance().signOut();
+                    SharedPreferences.Editor ed = sharedPreferences.edit();
+                    ed.clear();
+                    ed.commit();
                     startActivity(new Intent(MainActivity.this, UserLogin.class));
                     finish();
                     return;
                 }
             }
         });
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference cc = db.collection("AssignedStudents");
-        db.collection("StudentList").whereEqualTo("id", FirebaseAuth.getInstance().getCurrentUser().getUid()).get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        // ...
-                        Log.e("dfadfa",queryDocumentSnapshots.getDocuments()+"");
-                        //Toast.makeText(getApplicationContext(), queryDocumentSnapshots+"", Toast.LENGTH_SHORT).show();
-                    }
-                });
 
     }
 
@@ -202,7 +182,10 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.fee) {
             startActivity(new Intent(MainActivity.this, ViewFees.class));
         }else if (id == R.id.log_out) {
-            FirebaseAuth.getInstance().signOut();
+            //FirebaseAuth.getInstance().signOut();
+            SharedPreferences.Editor ed = sharedPreferences.edit();
+            ed.clear();
+            ed.commit();
             startActivity(new Intent(MainActivity.this, UserLogin.class));
             finish();
         }
@@ -215,7 +198,7 @@ public class MainActivity extends AppCompatActivity
     private void setProfileImage(final ImageView profile){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("Parent").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+        db.collection("Parent").document("S"+uid)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -223,10 +206,12 @@ public class MainActivity extends AppCompatActivity
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
 
-                            Glide.with(MainActivity.this)
-                                    .load(Uri.parse(document.get("image").toString()))
-                                    .asBitmap()
-                                    .into(profile);
+                            if(document.get("image") != null && document.get("image").toString().equalsIgnoreCase("default")) {
+                                Glide.with(MainActivity.this)
+                                        .load(Uri.parse(document.get("image").toString()))
+                                        .asBitmap()
+                                        .into(profile);
+                            }
 
                             Log.e("success", document.getId() + " => " + document.getData());
 

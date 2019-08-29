@@ -1,13 +1,15 @@
 package com.app.trackschool;
 
-import android.graphics.Color;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -23,10 +25,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -60,7 +60,9 @@ public class Tracking extends AppCompatActivity implements OnMapReadyCallback {
     EditText addresset;
     Geocoder geocoder;
     ImageView back;
+    String uid;
     ArrayList<LatLng> markerPoints = new ArrayList<>();
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,17 @@ public class Tracking extends AppCompatActivity implements OnMapReadyCallback {
         //database = FirebaseDatabase.getInstance();
         db = FirebaseFirestore.getInstance();
         db.collection("Parent");
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        uid = sharedPreferences.getString("admissionNo","NULL");
+
+        if(uid == null || uid.equals("NULL")) {
+            // Opens login/signup Activity
+            Intent login_Session = new Intent(Tracking.this, UserLogin.class);
+            startActivity(login_Session);
+            finish();
+            return;
+        }
 
         geocoder = new Geocoder(this, Locale.getDefault());
 
@@ -104,12 +117,11 @@ public class Tracking extends AppCompatActivity implements OnMapReadyCallback {
         mMap = googleMap;
 
         if(driverId.equals("")) {
-            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
             /********************************************
              * TODO: Get assigned driver id from database.
              */
-            db.collection("Parent").document(uid)
+            db.collection("Parent").document("S"+uid)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override

@@ -2,10 +2,8 @@ package com.app.trackschool;
 
 import android.graphics.Color;
 import android.util.Log;
-
 import com.imanoweb.calendarview.DayDecorator;
 import com.imanoweb.calendarview.DayView;
-
 import java.util.ArrayList;
 
 

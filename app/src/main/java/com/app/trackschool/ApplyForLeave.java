@@ -2,12 +2,11 @@ package com.app.trackschool;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatTextView;
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.location.Address;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -15,29 +14,13 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
-
-import com.app.trackschool.Model.Location;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.annotations.Nullable;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 
 public class ApplyForLeave extends AppCompatActivity {
 
@@ -48,6 +31,7 @@ public class ApplyForLeave extends AppCompatActivity {
     String driverId = "default";
     ImageView back;
     HashMap<String, Object> hashMap = new HashMap<>();
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +43,17 @@ public class ApplyForLeave extends AppCompatActivity {
         to = findViewById(R.id.holiday_upto);
         updateBtn = findViewById(R.id.holiday_update_btn);
         back = findViewById(R.id.back);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        final String uid = sharedPreferences.getString("admissionNo","NULL");
+
+        if(uid == null || uid.equals("NULL")) {
+            // Opens login/signup Activity
+            Intent login_Session = new Intent(ApplyForLeave.this, UserLogin.class);
+            startActivity(login_Session);
+            finish();
+            return;
+        }
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +93,7 @@ public class ApplyForLeave extends AppCompatActivity {
                 if (!TextUtils.isEmpty(reason_holiday) || !TextUtils.isEmpty(holiday_from) ||
                         !TextUtils.isEmpty(holiday_to) ){
 
-                    db.collection("Parent").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    db.collection("Parent").document("S"+uid)
                             .get()
                             .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
@@ -116,10 +111,10 @@ public class ApplyForLeave extends AppCompatActivity {
 
                                         Log.e("driverid",driverId+"");
                                         hashMap.put("driver_id", driverId);
-                                        hashMap.put("image", document.get("image").toString());
+                                        //hashMap.put("image", document.get("image").toString());
                                         hashMap.put("name", document.get("student_name").toString());
-                                        hashMap.put("parent_id", document.get("uid").toString());
-                                        db.collection("Holiday").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        hashMap.put("parent_id", "S"+uid);
+                                        db.collection("Holiday").document("S"+uid)
                                                 .set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
