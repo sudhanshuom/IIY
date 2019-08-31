@@ -153,6 +153,7 @@ public class UserLogin extends AppCompatActivity {
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putString("admissionNo", adno);
                             editor.putString("phone",passwordd);
+                            editor.putString("name",document.getString("student_name"));
                             editor.commit();
                             editor.apply();
                             Log.e("shared", sharedpreferences.getString("admissionNo", "NULL"));

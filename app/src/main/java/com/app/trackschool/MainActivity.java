@@ -21,17 +21,14 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     GridView gridview;
     private SharedPreferences sharedPreferences;
-    private String uid;
+    private String uid, namee;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +37,7 @@ public class MainActivity extends AppCompatActivity
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         uid = sharedPreferences.getString("admissionNo","NULL");
+        namee = sharedPreferences.getString("name","NOT FOUND");;
 
         if(uid.equals("NULL")) {
             // Opens login/signup Activity
@@ -72,12 +70,12 @@ public class MainActivity extends AppCompatActivity
 //                        Log.e("token", token);
 //                        FirebaseFirestore db = FirebaseFirestore.getInstance();
 //
-////                        sendNotification(token).addOnSuccessListener(new OnSuccessListener<String>() {
-////                            @Override
-////                            public void onSuccess(String s) {
-////                                Log.e("return", s);
-////                            }
-////                        });
+//                        sendNotification(token).addOnSuccessListener(new OnSuccessListener<String>() {
+//                            @Override
+//                            public void onSuccess(String s) {
+//                                Log.e("return", s);
+//                            }
+//                        });
 //                        db.collection("Parent").document("user/"+FirebaseAuth.getInstance().getCurrentUser().getUid()
 //                        +"/details").update("token",token);
 //                    }
@@ -88,11 +86,9 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         View view = navigationView.getHeaderView(0);
-        TextView navemail = view.findViewById(R.id.textView);
-        ImageView imageView = view.findViewById(R.id.imageView);
-        setProfileImage(imageView);
+        TextView name = view.findViewById(R.id.textView);
 
-        //navemail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        name.setText(namee);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -195,33 +191,33 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void setProfileImage(final ImageView profile){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        db.collection("Parent").document("S"+uid)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-
-                            if(document.get("image") != null && document.get("image").toString().equalsIgnoreCase("default")) {
-                                Glide.with(MainActivity.this)
-                                        .load(Uri.parse(document.get("image").toString()))
-                                        .asBitmap()
-                                        .into(profile);
-                            }
-
-                            Log.e("success", document.getId() + " => " + document.getData());
-
-                        } else {
-                            Log.e("error", "Error getting documents.", task.getException());
-                        }
-                    }
-                });
-
-    }
+//    private void setProfileImage(final ImageView profile){
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//
+//        db.collection("Parent").document("S"+uid)
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            DocumentSnapshot document = task.getResult();
+//
+//                            if(document.get("image") != null && document.get("image").toString().equalsIgnoreCase("default")) {
+//                                Glide.with(MainActivity.this)
+//                                        .load(Uri.parse(document.get("image").toString()))
+//                                        .asBitmap()
+//                                        .into(profile);
+//                            }
+//
+//                            Log.e("success", document.getId() + " => " + document.getData());
+//
+//                        } else {
+//                            Log.e("error", "Error getting documents.", task.getException());
+//                        }
+//                    }
+//                });
+//
+//    }
 
 
 

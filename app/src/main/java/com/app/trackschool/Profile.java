@@ -2,19 +2,15 @@ package com.app.trackschool;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.app.trackschool.Model.Profile_model;
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -22,10 +18,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Profile extends AppCompatActivity {
 
-    Uri profileimg;
+    //Uri profileimg;
 
     private TextView name, class_sec, admission_no, contact, father;
-    private ImageView backimg, profile;
+    private ImageView backimg;
 
     private SharedPreferences sharedPreferences;
 
@@ -48,7 +44,6 @@ public class Profile extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         backimg = findViewById(R.id.back);
-        profile = findViewById(R.id.profile_image);
         name = findViewById(R.id.name);
         class_sec = findViewById(R.id.class_sec);
         admission_no = findViewById(R.id.admission_no);
@@ -69,10 +64,10 @@ public class Profile extends AppCompatActivity {
                             contact.setText(document.get("student_contact")+"");
                             father.setText(document.get("student_fname")+"");
 
-                            if(document.get("image") != null && document.get("image").toString().equalsIgnoreCase("default")) {
-                                profileimg = Uri.parse(document.get("image").toString());
-                                downloadProfileImage(profileimg);
-                            }
+//                            if(document.get("image") != null && document.get("image").toString().equalsIgnoreCase("default")) {
+//                                profileimg = Uri.parse(document.get("image").toString());
+//                                downloadProfileImage(profileimg);
+//                            }
                             Log.e("success", document.getId() + " => " + document.getData());
 
                         } else {
@@ -90,16 +85,16 @@ public class Profile extends AppCompatActivity {
 
     }
 
-    private void downloadProfileImage(Uri uri){
-
-        profile.setImageURI(null);
-        profile.setBackground(null);
-        Glide.with(Profile.this)
-                .load(uri)
-                .asBitmap()
-                .into(profile);
-
-    }
+//    private void downloadProfileImage(Uri uri){
+//
+//        profile.setImageURI(null);
+//        profile.setBackground(null);
+//        Glide.with(Profile.this)
+//                .load(uri)
+//                .asBitmap()
+//                .into(profile);
+//
+//    }
 
     @Override
     public void onBackPressed() {
