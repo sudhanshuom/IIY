@@ -158,15 +158,19 @@ public class UserLogin extends AppCompatActivity {
                             editor.apply();
                             Log.e("shared", sharedpreferences.getString("admissionNo", "NULL"));
                             startActivity(new Intent(UserLogin.this, MainActivity.class));
+                            finish();
+                        }else{
+                            Toast.makeText(UserLogin.this, "Login Fail", Toast.LENGTH_LONG).show();
                         }
                         progressDialog.cancel();
-                        finish();
                     } else {
                         progressDialog.cancel();
                         Toast.makeText(UserLogin.this, "Login Fail", Toast.LENGTH_LONG).show();
                         Log.e("docstatus", "Document does not exist!");
                     }
                 } else {
+                    progressDialog.cancel();
+                    Toast.makeText(UserLogin.this, "Login Fail", Toast.LENGTH_LONG).show();
                     Log.e("FailLoad", "Failed with: ", task.getException());
                 }
             }
