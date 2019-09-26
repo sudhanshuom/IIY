@@ -31,8 +31,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class UserLogin extends AppCompatActivity {
 
-
-    private String server_url_login = "https://limitless-beach-58047.herokuapp.com/signin";
     /**
      * UserLogin Activity
      * Used to get user credentials.

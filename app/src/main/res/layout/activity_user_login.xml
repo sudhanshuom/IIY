@@ -65,7 +65,7 @@
                 android:drawableLeft="@drawable/password"
                 android:drawablePadding="8dp"
                 android:gravity="center_vertical"
-                android:hint="Password"
+                android:hint="Registered Mobile"
                 android:inputType="textPassword"
                 android:textCursorDrawable="@drawable/cursor"
                 android:padding="10dp"

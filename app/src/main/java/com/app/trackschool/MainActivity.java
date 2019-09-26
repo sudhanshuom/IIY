@@ -15,6 +15,9 @@ import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -47,39 +50,25 @@ public class MainActivity extends AppCompatActivity
             return;
         }
 
-        //startService(new Intent(getApplicationContext(), GetUpdatedDriverLocation.class));
-//        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-//        if(FirebaseAuth.getInstance().getCurrentUser() == null){
-//            startActivity(new Intent(MainActivity.this, UserLogin.class));
-//            finish();
-//            return;
-//        }
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseFirestore.collection("Updates").document("Parent").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot documentSnapshot = task.getResult();
+                final int curr = BuildConfig.VERSION_CODE;
+                //Toast.makeText(UpdateActivity.this,String.valueOf(code),Toast.LENGTH_LONG).show();// package name of the app
 
-//        mFunctions = FirebaseFunctions.getInstance();
-//        FirebaseInstanceId.getInstance().getInstanceId()
-//                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-//                        if (!task.isSuccessful()) {
-//                            Log.e("instanceFail", "getInstanceId failed", task.getException());
-//                            return;
-//                        }
-//
-//                        String token = task.getResult().getToken();
-//
-//                        Log.e("token", token);
-//                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//
-//                        sendNotification(token).addOnSuccessListener(new OnSuccessListener<String>() {
-//                            @Override
-//                            public void onSuccess(String s) {
-//                                Log.e("return", s);
-//                            }
-//                        });
-//                        db.collection("Parent").document("user/"+FirebaseAuth.getInstance().getCurrentUser().getUid()
-//                        +"/details").update("token",token);
-//                    }
-//                });
+                //int curr = Integer.parseInt(documentSnapshot.get("curr").toString());
+                int update = Integer.parseInt(documentSnapshot.get("update").toString());
+
+                if(curr != update)
+                {
+                    Intent intent = new Intent(MainActivity.this,UpdateActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -177,6 +166,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(MainActivity.this, HolidayCalendar.class));
         } else if (id == R.id.fee) {
             startActivity(new Intent(MainActivity.this, ViewFees.class));
+        } else if (id == R.id.feedback) {
+            startActivity(new Intent(MainActivity.this, Feedback.class));
         }else if (id == R.id.log_out) {
             //FirebaseAuth.getInstance().signOut();
             SharedPreferences.Editor ed = sharedPreferences.edit();
